@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Modal, withStyles } from '@material-ui/core';
+import { Fab, Modal, withStyles } from '@material-ui/core';
 import { fetchMovie } from '../data/movies';
+
+import { Close as CloseIcon } from '@material-ui/icons';
 
 const styles = {
   root: {
@@ -12,6 +14,9 @@ const styles = {
     justifyContent: 'center',
     textAlign: 'center',
     fontSize: 'calc(10px + 1vmin)'
+  },
+  fab: {
+    display: 'flex'
   },
   paper: {
     backgroundColor: '#FFFFFF',
@@ -28,7 +33,7 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
     voteAverage: 0,
     voteCount: 0,
     status: 'Status',
-    poster: 'Poster',
+    poster: null,
     genres: 'Genres',
     language: 'Language'
   });
@@ -68,11 +73,14 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
       className={classes.root}
     >
       <div className={classes.paper}>
+        <Fab className={classes.fab} onClick={handleClose}>
+          <CloseIcon />
+        </Fab>
         <h4 id="movie-title">{title}</h4>
         {poster && (
           <img
             alt="movie-poster"
-            src={`http://image.tmdb.org/t/p/w92/${poster}`}
+            src={`https://image.tmdb.org/t/p/w92/${poster}`}
           />
         )}
         <p id="movie-stats">
