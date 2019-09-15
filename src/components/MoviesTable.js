@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles } from '@material-ui/core';
 import MaterialTable from 'material-table';
 
@@ -16,20 +16,12 @@ const styles = {
     textAlign: 'center',
     fontSize: 'calc(10px + 2vmin)',
     color: 'white'
-  },
-  paper: {
-    top: '40%',
-    left: '40%',
-    position: 'absolute',
-    width: 400,
-    backgroundColor: '#FFFFFF',
-    border: '2px solid #000'
   }
 };
 
 const columns = [
   { title: 'ID', field: 'id' },
-  { title: 'Title', field: 'title' },
+  { title: 'Title', field: 'name' },
   { title: 'Genres', field: 'genres' },
   { title: 'Release', field: 'release' }
 ];
@@ -37,19 +29,28 @@ const columns = [
 const data = [
   {
     id: '1',
-    title: 'Noob',
+    name: 'Noob 1',
     genres: 'Thriller, Mistery',
-    release: '10.10.2019'
+    release: '2019-11-10'
   },
   {
     id: '2',
-    title: 'Noob',
+    name: 'Noob 2',
     genres: 'Thriller, Mistery',
-    release: '10.10.2019'
+    release: '2019-10-15'
   }
 ];
 
 const MoviesTable = ({ classes, openModal }) => {
+  useEffect(() => {
+    console.log('mount table');
+
+    // const movieDetails = await fetchMovie({ id });
+    // setMovie(movieDetails);
+
+    return () => console.log('unmount table');
+  }, []);
+
   return (
     <MaterialTable
       title="Movie List"
@@ -57,7 +58,7 @@ const MoviesTable = ({ classes, openModal }) => {
         {
           icon: () => <DetailsIcon />,
           tooltip: 'Details',
-          onClick: (e, rowData) => openModal(e, rowData)
+          onClick: (e, rowData) => openModal(rowData)
         }
       ]}
       columns={columns}

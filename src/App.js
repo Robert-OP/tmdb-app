@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core';
 
 import MovieModal from './components/MovieModal';
 import MoviesTable from './components/MoviesTable';
+import Login from './components/Login';
 
 // import { loginUser } from './data/authentication';
 
@@ -21,14 +22,22 @@ const styles = {
 };
 
 const App = ({ classes }) => {
+  const [auth, setAuth] = useState(false);
   const [open, setOpen] = useState(false);
+  const [movie, setMovie] = useState({
+    id: '1',
+    name: 'None',
+    genres: 'None',
+    release: 'None'
+  });
 
   useEffect(() => {
     console.log('mount app');
 
-    // loginUser({ id: 'admin', password: 'webapi' });
+    // const movieDetails = await fetchMovie({ id });
+    // setMovie(movieDetails);
 
-    return () => console.log('unmount');
+    return () => console.log('unmount app');
   }, []);
 
   const handleOpen = () => {
@@ -39,16 +48,25 @@ const App = ({ classes }) => {
     setOpen(false);
   };
 
-  const openModal = (rowData, e) => {
-    console.log('Details Modal', rowData, e);
+  const openModal = async rowData => {
+    console.log('Details Modal', rowData);
+    setMovie(rowData);
     handleOpen();
   };
 
   return (
     <div className={classes.root}>
-      <h1>TMDB</h1>
-      <MoviesTable openModal={openModal} />
-      <MovieModal open={open} handleClose={handleClose} />
+      {auth ? (
+        <>
+          <h1>TMDB</h1>
+          <MoviesTable openModal={openModal} />
+          {open && (
+            <MovieModal handleClose={handleClose} open={open} movie={movie} />
+          )}
+        </>
+      ) : (
+        <Login />
+      )}
     </div>
   );
 };

@@ -18,3 +18,16 @@ export const extractMovies = async () => {
     return Promise.reject(error.response);
   }
 };
+
+export const fetchMovie = async ({ id }) => {
+  try {
+    console.log(id);
+    const response = await API.get(apiBaseUrl);
+    if (!response) throw Error(`Request rejected`);
+    const movie = response.data || {};
+    console.log(movie);
+    return Promise.resolve(movie);
+  } catch (error) {
+    return Promise.reject(error.response);
+  }
+};
