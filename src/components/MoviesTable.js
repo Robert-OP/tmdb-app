@@ -53,9 +53,7 @@ const MoviesTable = ({ openModal }) => {
   }, []);
 
   useEffect(() => {
-    console.log('mount table');
     fetchData();
-
     return () => console.log('unmount table');
   }, []);
 

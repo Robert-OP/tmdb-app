@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
 
 import MovieModal from './components/MovieModal';
@@ -28,14 +28,6 @@ const App = ({ classes }) => {
     genres: 'None',
     release: 'None'
   });
-
-  useEffect(() => {
-    console.log('mount app');
-
-    // setMovie(movieDetails);
-
-    return () => console.log('unmount app');
-  }, []);
 
   const handleOpen = () => {
     setOpen(true);

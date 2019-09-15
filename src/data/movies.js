@@ -12,12 +12,9 @@ export const extractMovies = async () => {
     const response = await API.get(apiBaseUrl);
 
     if (!response) throw Error(`Request rejected`);
-    console.log(response.data);
     const movies = response.data.results || {};
-    console.log(movies);
     await movies.forEach(async movie => {
       const { id, title, release_date: release } = movie;
-      console.log(movie);
       await db.collection('movies').add({
         id,
         release,
@@ -47,6 +44,7 @@ export const fetchMovie = async ({ id }) => {
     const apiBaseUrl =
       `https://api.themoviedb.org/3/movie/${id}?api_key=` + apiKey;
     const response = await API.get(apiBaseUrl);
+
     if (!response) throw Error(`Request rejected`);
     const movie = response.data || {};
 
@@ -74,7 +72,6 @@ export const fetchMovie = async ({ id }) => {
       language: original_language
     };
 
-    console.log(movieDetails);
     return Promise.resolve(movieDetails);
   } catch (error) {
     return Promise.reject(error.response);

@@ -48,8 +48,6 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
   const fetchData = useCallback(async () => {
     try {
       const data = await fetchMovie({ id: movie.id });
-      console.log(data);
-
       setDetails(data);
     } catch (error) {
       console.error(error);
@@ -57,9 +55,7 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
   }, [movie]);
 
   useEffect(() => {
-    // console.log('mount modal', movie);
     fetchData();
-
     return () => console.log('unmount modal');
   }, []);
 
