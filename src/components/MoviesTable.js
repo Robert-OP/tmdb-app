@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { withStyles } from '@material-ui/core';
 import MaterialTable from 'material-table';
 
 import { Details as DetailsIcon } from '@material-ui/icons';
 import tableIcons from '../constants/icons';
+
+import { fetchMovies } from '../data/movies';
 
 const styles = {
   root: {
@@ -21,32 +23,38 @@ const styles = {
 
 const columns = [
   { title: 'ID', field: 'id' },
-  { title: 'Title', field: 'name' },
-  { title: 'Genres', field: 'genres' },
+  { title: 'Title', field: 'title' },
   { title: 'Release', field: 'release' }
 ];
 
-const data = [
-  {
-    id: '1',
-    name: 'Noob 1',
-    genres: 'Thriller, Mistery',
-    release: '2019-11-10'
-  },
-  {
-    id: '2',
-    name: 'Noob 2',
-    genres: 'Thriller, Mistery',
-    release: '2019-10-15'
-  }
-];
+// const data = [
+//   {
+//     id: '1',
+//     title: 'Test 1',
+//     release: '2019-11-10'
+//   },
+//   {
+//     id: '2',
+//     title: 'Test 2',
+//     release: '2019-10-15'
+//   }
+// ];
 
-const MoviesTable = ({ classes, openModal }) => {
+const MoviesTable = ({ openModal }) => {
+  const [movies, setMovies] = useState([]);
+
+  const fetchData = useCallback(async () => {
+    try {
+      const docs = await fetchMovies();
+      setMovies(docs);
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
   useEffect(() => {
     console.log('mount table');
-
-    // const movieDetails = await fetchMovie({ id });
-    // setMovie(movieDetails);
+    fetchData();
 
     return () => console.log('unmount table');
   }, []);
@@ -62,7 +70,7 @@ const MoviesTable = ({ classes, openModal }) => {
         }
       ]}
       columns={columns}
-      data={data}
+      data={movies}
       icons={tableIcons}
       options={{
         actionsColumnIndex: -1,

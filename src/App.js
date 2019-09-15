@@ -5,9 +5,6 @@ import MovieModal from './components/MovieModal';
 import MoviesTable from './components/MoviesTable';
 import Login from './components/Login';
 
-// import { loginUser } from './data/authentication';
-import { extractMovies } from './data/movies';
-
 const styles = {
   root: {
     backgroundColor: '#282c34',
@@ -49,14 +46,13 @@ const App = ({ classes }) => {
   };
 
   const openModal = async rowData => {
-    console.log('Details Modal', rowData);
     setMovie(rowData);
     handleOpen();
   };
 
   return (
     <div className={classes.root}>
-      {auth ? (
+      {!auth ? (
         <>
           <h1>TMDB</h1>
           <MoviesTable openModal={openModal} />

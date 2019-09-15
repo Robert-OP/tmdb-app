@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Modal, withStyles } from '@material-ui/core';
 import { fetchMovie } from '../data/movies';
 
@@ -11,18 +11,18 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    fontSize: 'calc(10px + 2vmin)'
+    fontSize: 'calc(10px + 1vmin)'
   },
   paper: {
-    width: 400,
     backgroundColor: '#FFFFFF',
-    border: '2px solid #000'
+    border: '2px solid #000',
+    padding: '8px 8px'
   }
 };
 
 const MovieModal = ({ classes, handleClose, open, movie }) => {
   const [movieDetails, setDetails] = useState({
-    name: 'Movie Title',
+    title: 'Movie Title',
     overview: 'Overview',
     popularity: 'Popularity',
     voteAverage: 0,
@@ -34,7 +34,7 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
   });
 
   const {
-    name,
+    title,
     overview,
     popularity,
     voteAverage,
@@ -45,11 +45,20 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
     language
   } = movieDetails;
 
-  useEffect(() => {
-    console.log('mount modal', movie);
+  const fetchData = useCallback(async () => {
+    try {
+      const data = await fetchMovie({ id: movie.id });
+      console.log(data);
 
-    // const movieDetails = await fetchMovie({ id });
-    // setDetails(movieDetails);
+      setDetails(data);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [movie]);
+
+  useEffect(() => {
+    // console.log('mount modal', movie);
+    fetchData();
 
     return () => console.log('unmount modal');
   }, []);
@@ -63,17 +72,22 @@ const MovieModal = ({ classes, handleClose, open, movie }) => {
       className={classes.root}
     >
       <div className={classes.paper}>
-        <h2 id="simple-modal-title">
-          {name} + {popularity}
-        </h2>
-        <p id="simple-modal-description">{genres}</p>
-        <p id="simple-modal-description">{overview}</p>
-        <p id="simple-modal-description">
-          Count: {voteCount} + Average: {voteAverage}
+        <h4 id="movie-title">{title}</h4>
+        {poster && (
+          <img
+            alt="movie-poster"
+            src={`http://image.tmdb.org/t/p/w92/${poster}`}
+          />
+        )}
+        <p id="movie-stats">
+          Popularity: {popularity} | Count: {voteCount} | Average: {voteAverage}
         </p>
-        <p id="simple-modal-description">{status}</p>
-        <p id="simple-modal-description">{language}</p>
-        <p id="simple-modal-description">{poster}</p>
+        <p id="movie-details">
+          Genres: {genres} | Status: {status} | Language: {language}
+        </p>
+        <p id="movie-overview" style={{ textAlign: 'justify' }}>
+          {overview}
+        </p>
       </div>
     </Modal>
   );
