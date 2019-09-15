@@ -6,6 +6,7 @@ import MoviesTable from './components/MoviesTable';
 import Login from './components/Login';
 
 // import { loginUser } from './data/authentication';
+import { extractMovies } from './data/movies';
 
 const styles = {
   root: {
@@ -34,7 +35,6 @@ const App = ({ classes }) => {
   useEffect(() => {
     console.log('mount app');
 
-    // const movieDetails = await fetchMovie({ id });
     // setMovie(movieDetails);
 
     return () => console.log('unmount app');
